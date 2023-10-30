@@ -1,0 +1,86 @@
+---
+title: "Prac4"
+output: html_document
+date: "2023-10-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#install packages and library
+```{r insatll and library}
+install.packages("readr")
+library(readr)
+library(here)
+install.packages("maptools")
+install.packages(c("classInt", "tmap"))
+
+# might also need these ones
+install.packages(c("RColorBrewer", "sp", "rgeos", 
+                   "tmaptools", "sf", "downloader", "rgdal", 
+                   "geojsonio"))
+#Load Packages (ignore any error messages about being built under a 
+#different R version):
+library(maptools)
+library(RColorBrewer)
+library(classInt)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(janitor)
+```
+
+## Load CSV
+```{r read Global Gender Inequality Data}
+Week4csv <- read_csv("HDR21-22_Composite_indices_complete_time_series.csv") 
+Week4csv%>%
+  colnames()%>%
+  # just look at the head, top5
+  head()
+```
+
+##Janitor to Clean Head
+```{r Janitor}
+Week4 <- Week4csv %>%
+  dplyr::rename(COUNTRY=`country`)%>%
+  clean_names()
+```
+
+##Mutate
+```{r Mutate}
+Week_4 <- Week4 %>% 
+  #new column with difference in difference in inequality between 2010 and 2019
+  mutate(diff_inequality = (hdi_2010 - hdi_2019))%>%
+    #select only columns we want
+  dplyr::select(country,
+         diff_inequality)
+  
+```
+
+## Load Spatial data
+```{r Load Spatial Data}
+Week4Map <- st_read("C:/Users/Gitanjali/OneDrive - Creative Arts Education Society/Documents/MSc USS/CASA0005 GIS/Week 4/World_Countries_Generalized.geojson")
+```
+
+##Edit Trail
+```{r Left_Join}
+Map4 <- Week4Map %>% 
+  clean_names() %>%
+    left_join(., Week_4,
+            by = c("country" = "country"))
+```
+ 
+##Plot
+```{r Plot}
+library(tmap)
+library(tmaptools)
+tmap_mode("plot")
+qtm(Map4, 
+    fill = "diff_inequality")which git
+```
+
