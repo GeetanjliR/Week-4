@@ -81,6 +81,6 @@ library(tmap)
 library(tmaptools)
 tmap_mode("plot")
 qtm(Map4, 
-    fill = "diff_inequality")which git
+    fill = "diff_inequality")
 ```
 
