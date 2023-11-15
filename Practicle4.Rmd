@@ -64,7 +64,7 @@ Week_4 <- Week4 %>%
 
 ## Load Spatial data
 ```{r Load Spatial Data}
-Week4Map <- st_read("C:/Users/Gitanjali/OneDrive - Creative Arts Education Society/Documents/MSc USS/CASA0005 GIS/Week 4/World_Countries_Generalized.geojson")
+Week4Map <- st_read("World_Countries_Generalized.geojson")
 ```
 
 ##Edit Trail
